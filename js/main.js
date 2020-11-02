@@ -96,3 +96,37 @@ function setClock(selector, endtime) {
 }
 
 setClock('.timer', deadline);
+
+
+//modal
+
+const listBtnModal = document.querySelectorAll('[data-modal]'),
+  modalWindow = document.querySelector('.modal'),
+  closeModal = document.querySelector('[data-close]');
+
+//ф-я добавления или удаления класса show и изменения значения св-ва owerflow 
+function toggleShow(strValue) {
+  modalWindow.classList.toggle('show');
+  document.body.style.overflow = strValue;
+}
+
+// ф-я обработчика события на кнопки для вызова модального окна
+listBtnModal.forEach((item) => {
+  item.addEventListener('click', () => {
+    toggleShow('hidden');
+  });
+});
+
+// ф-я обраб для закрытия модального окна
+modalWindow.addEventListener('click', (e) => {
+  if (e.target === closeModal || modalWindow === e.target) {
+    toggleShow('auto');
+  }
+});
+
+// ф-я обраб для закрытия модального окна от кнопки Escape
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Escape' && modalWindow.classList.contains('show')) {
+    toggleShow('auto');
+  }
+});
