@@ -105,9 +105,10 @@ const listBtnModal = document.querySelectorAll('[data-modal]'),
   closeModal = document.querySelector('[data-close]');
 
 //ф-я добавления или удаления класса show и изменения значения св-ва owerflow 
-function toggleShow(strValue) {
+function toggleShow(strValue = 'hidden') {
   modalWindow.classList.toggle('show');
   document.body.style.overflow = strValue;
+  clearInterval(modalTimerId);
 }
 
 // ф-я обработчика события на кнопки для вызова модального окна
@@ -130,3 +131,16 @@ document.addEventListener('keydown', (e) => {
     toggleShow('auto');
   }
 });
+
+const modalTimerId = setTimeout(toggleShow, 6000);
+
+//ф-я включения модального окна при конечном скроле страницы и затем удаляет слушетель события на скролл этой функции
+function showModalByScroll() {
+  if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+    toggleShow();
+    // удаление слушателя события на скролл
+    window.removeEventListener('scroll', showModalByScroll);
+  }
+}
+//слушатель события на скролл
+window.addEventListener('scroll', showModalByScroll);
